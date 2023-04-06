@@ -26,5 +26,5 @@ SpeedDater is used to bring you closer to people that you typically might not ha
 * Javasript
 
 # Links
-Deployed URL - 
+Deployed URL - https://speeddater.herokuapp.com/
 
