@@ -1,17 +1,18 @@
+//imports react hooks needed
 import React, { useState, useEffect } from "react";
+//imports react bootstrap styling tags
 import { Form, Button, Alert } from "react-bootstrap";
+//imports edit bio form's corresponding css styling file from styles folder
 import "../../styles/bioform.css";
+//imports needed to use data mutations
 import { useMutation } from "@apollo/client";
 import { UPDATE_BIO } from "../../utils/mutations";
 
-
-
-
+//function to prepare, structure, style, and handle user data pertaining to the edit bio component
+//this component is exported then imported to the corresponding 'edit bio' file in the page folder
 const EditBioForm = ({ myBio }) => {
 
-    
-
-  // set initial form state
+  // set initial form state to the logged in user's existing bio data
   const [userFormData, setUserFormData] = useState({
     
     interests: myBio.interests,
@@ -26,7 +27,7 @@ const EditBioForm = ({ myBio }) => {
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
 
-
+//calls the update bio mutation 
   const [updateBio, { error }] = useMutation(UPDATE_BIO);
 
   useEffect(() => {
@@ -36,12 +37,12 @@ const EditBioForm = ({ myBio }) => {
       setShowAlert(false);
     }
   }, [error]);
-
+//declares user input as key value pair in order to update the data
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
-
+//function to check the form has been filled out properly, then execute the updatebio mutation
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -51,7 +52,7 @@ const EditBioForm = ({ myBio }) => {
       event.preventDefault();
       event.stopPropagation();
     }
-
+//mutation called in this try, updates db with the user's new form input
     try {
       const { data } = await updateBio({
           variables: {
@@ -68,7 +69,7 @@ const EditBioForm = ({ myBio }) => {
     } catch (err) {
       console.error(err);
     }
-
+//resets the form to empty strings after user has submitted their updated bio info
     setUserFormData({
         interests: "",
         bio: "",
@@ -78,7 +79,7 @@ const EditBioForm = ({ myBio }) => {
         
     });
   };
-
+//returns the structured 'edit bio' form component with the user's existing bio data within the input fields for them to edit then submit
   return (
     <>
       {/* This is needed for the validation functionality above */}

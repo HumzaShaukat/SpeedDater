@@ -1,11 +1,19 @@
+//this file creates the content for the page displaying the list of all user account
 import React from "react";
+//imports react bootstrap tags for styling
 import { Container, Card, Row } from "react-bootstrap";
+//imports css file for styling
 import "../../styles/profileList.css";
+//imports link to be use to navigate between pages
 import { Link } from "react-router-dom";
 
+//this function passes user data from the db into the structuring of the page to display to dom
 const AllProfiles = (props) => {
+  //declares 'bios' as a const and allows use of bio data as a prop
   const { bios } = props;
   console.log(bios);
+  //returns the structured/ styled/ component with db data called to the page
+  //this component is exported, then imported into its corresponding page file
   return (
     <Container className="profileList">
       {bios.map((user) => {
