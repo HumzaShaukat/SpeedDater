@@ -10,8 +10,12 @@ import { QUERY_PREFERENCE } from "../../utils/queries";
 import SignupPage from "../SignupPage";
 
 const Dashboard = () => {
-  const { loading: bioLoading, data: bioData } = useQuery(QUERY_BIO);
-  const { loading: userLoading, data: userData } = useQuery(QUERY_USER);
+  const { loading: bioLoading, data: bioData } = useQuery(QUERY_BIO, {
+    fetchPolicy: "network-only",
+  });
+  const { loading: userLoading, data: userData } = useQuery(QUERY_USER, {
+    fetchPolicy: "network-only",
+  });
   const { loading: preferenceLoading, data: preferenceData } =
     useQuery(QUERY_PREFERENCE);
 

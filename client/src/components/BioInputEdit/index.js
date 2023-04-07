@@ -7,20 +7,18 @@ import "../../styles/bioform.css";
 //imports needed to use data mutations
 import { useMutation } from "@apollo/client";
 import { UPDATE_BIO } from "../../utils/mutations";
+import { useNavigate } from "react-router-dom";
+import Dashboard from "../../pages/Dashboard";
 
-//function to prepare, structure, style, and handle user data pertaining to the edit bio component
-//this component is exported then imported to the corresponding 'edit bio' file in the page folder
 const EditBioForm = ({ myBio }) => {
-
-  // set initial form state to the logged in user's existing bio data
+  const navigate = useNavigate();
+  // set initial form state
   const [userFormData, setUserFormData] = useState({
-    
     interests: myBio.interests,
-      bio: myBio.bio,
-      age: myBio.age,
-      gender: myBio.gender,
-      location: myBio.location,
-     
+    bio: myBio.bio,
+    age: myBio.age,
+    gender: myBio.gender,
+    location: myBio.location,
   });
   // set state for form validation
   const [validated] = useState(false);
@@ -55,37 +53,38 @@ const EditBioForm = ({ myBio }) => {
 //mutation called in this try, updates db with the user's new form input
     try {
       const { data } = await updateBio({
-          variables: {
-            interests: userFormData.interests,
-            bio: userFormData.bio,
-            age: parseInt(userFormData.age),
-            gender: userFormData.gender,
-            location: userFormData.location
-           
-          }
-        
+        variables: {
+          interests: userFormData.interests,
+          bio: userFormData.bio,
+          age: parseInt(userFormData.age),
+          gender: userFormData.gender,
+          location: userFormData.location,
+        },
       });
-      console.log(data);
+      navigate("/dashboard");
+      return <Dashboard />;
     } catch (err) {
       console.error(err);
     }
 //resets the form to empty strings after user has submitted their updated bio info
     setUserFormData({
-        interests: "",
-        bio: "",
-        age: "",
-        gender: "",
-        location: ""
-        
+      interests: "",
+      bio: "",
+      age: "",
+      gender: "",
+      location: "",
     });
   };
 //returns the structured 'edit bio' form component with the user's existing bio data within the input fields for them to edit then submit
   return (
     <>
       {/* This is needed for the validation functionality above */}
-      <Form noValidate validated={validated} onSubmit={handleFormSubmit}
-       className="col-lg-6 col-md-6 col-sm-12 bioForm">
-    
+      <Form
+        noValidate
+        validated={validated}
+        onSubmit={handleFormSubmit}
+        className="col-lg-6 col-md-6 col-sm-12 bioForm"
+      >
         {/* show alert if server response is bad */}
         <Alert
           dismissible
@@ -95,27 +94,26 @@ const EditBioForm = ({ myBio }) => {
         >
           Something went wrong with your signup!
         </Alert>
-        
+
         <Form.Group className="bioGroup">
           <Form.Label className="bioText">interests</Form.Label>
-          
+
           <Form.Control
             type="text"
-        
             name="interests"
             onChange={handleInputChange}
             value={userFormData.interests}
             required
-            
           />
           <Form.Control.Feedback type="invalid">
             Username is required!
           </Form.Control.Feedback>
-          
-        </Form.Group >
-        
+        </Form.Group>
+
         <Form.Group className="bioGroup">
-          <Form.Label className="bioText" htmlFor="bio">bio</Form.Label>
+          <Form.Label className="bioText" htmlFor="bio">
+            bio
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Your bio here"
@@ -130,7 +128,9 @@ const EditBioForm = ({ myBio }) => {
         </Form.Group>
 
         <Form.Group className="bioGroup">
-          <Form.Label htmlFor="age" className="bioText">age</Form.Label>
+          <Form.Label htmlFor="age" className="bioText">
+            age
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Your age"
@@ -145,7 +145,9 @@ const EditBioForm = ({ myBio }) => {
         </Form.Group>
 
         <Form.Group className="bioGroup">
-          <Form.Label className="bioText" htmlFor="gender">gender</Form.Label>
+          <Form.Label className="bioText" htmlFor="gender">
+            gender
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Your gender"
@@ -160,7 +162,9 @@ const EditBioForm = ({ myBio }) => {
         </Form.Group>
 
         <Form.Group className="bioGroup">
-          <Form.Label className="bioText" htmlFor="location">location</Form.Label>
+          <Form.Label className="bioText" htmlFor="location">
+            location
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Your city"
@@ -174,9 +178,6 @@ const EditBioForm = ({ myBio }) => {
           </Form.Control.Feedback>
         </Form.Group>
 
-       
-
-
         <Button
           disabled={
             !(
@@ -184,10 +185,7 @@ const EditBioForm = ({ myBio }) => {
               userFormData.bio &&
               userFormData.age &&
               userFormData.gender &&
-              userFormData.location 
-            
-
-
+              userFormData.location
             )
           }
           type="submit"

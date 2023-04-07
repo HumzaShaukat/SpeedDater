@@ -6,8 +6,12 @@ import { Form, Button, Alert } from "react-bootstrap";
 import "../../styles/bioform.css";
 //imports use navigate for navigating between pages
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 //imports needed for the add bio mutation 
 //this mutation handles creating bio data in the db for the logged-in user
+=======
+import InitPreferencePage from "../../pages/PreferenceTest";
+>>>>>>> a6d72852e8e1b609112d85d6d56226bc9eac4853
 import { useMutation } from "@apollo/client";
 import { ADD_BIO } from "../../utils/mutations";
 
@@ -80,6 +84,7 @@ const InitBioForm = () => {
     });
 //seemlessly routes user to the page with the preference input form
     navigate("/newpref");
+    return <InitPreferencePage />;
   };
 
   return (

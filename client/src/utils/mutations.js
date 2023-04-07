@@ -14,7 +14,7 @@ export const ADD_USER = gql`
 
 export const ADD_BIO = gql`
   mutation addBio(
-    $interests: String!
+    $interests: [String]!
     $bio: String!
     $age: Int!
     $gender: String!
