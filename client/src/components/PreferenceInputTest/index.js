@@ -1,17 +1,25 @@
+//imports hooks
 import React, { useState, useEffect } from "react";
+//imports react bootstrap tags for structuring/styling the component
 import { Form, Button, Alert } from "react-bootstrap";
+//imports corresponding css styling file
 import "../../styles/preferenceForm.css";
+//imports upload photo component
 import UploadFile from "../inputTest";
+//imports use navigation to assist with routing
 import { useNavigate } from "react-router-dom";
+//imports needed for mutation to create initial user preference data
 import { useMutation } from "@apollo/client";
 import { ADD_PREFERENCE } from "../../utils/mutations";
-
+//imports dashboard page to be navigated to
 import Dashboard from "../../pages/Dashboard";
 // import Auth from "../../utils/auth";
 
+//function to create structured/styled functioning preference input form component
 const InitPreferenceForm = () => {
+  //declares usenavigate as function to assist with routing between pages
   const navigate = useNavigate();
-  // set initial form state
+  // set initial form state to empty strings
   const [userFormData, setUserFormData] = useState({
     ageMin: "",
     ageMax: "",
@@ -23,9 +31,9 @@ const InitPreferenceForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-
+//set state of add preference mutation
   const [addPreference, { error }] = useMutation(ADD_PREFERENCE);
-
+//shows an alert if there is an error with the users form input
   useEffect(() => {
     if (error) {
       setShowAlert(true);
@@ -33,22 +41,22 @@ const InitPreferenceForm = () => {
       setShowAlert(false);
     }
   }, [error]);
-
+//sets key value pairs of input fields to preference data 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
-
+  //function to handle the form being submitted
   const handlePreferenceForm = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // check if form has everything 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
-
+//calls add preference mutation to create preference data for the logged in user based off of their form input
     try {
       const { data } = await addPreference({
         variables: {
@@ -64,7 +72,7 @@ const InitPreferenceForm = () => {
     } catch (err) {
       console.error(err);
     }
-
+//sets form back to inputs having empty string values after submit
     setUserFormData({
       ageMin: "",
       ageMax: "",
@@ -72,6 +80,7 @@ const InitPreferenceForm = () => {
       gender: "",
       location: "",
     });
+    //brings user to their dashboard page after form submit
     navigate("/dashboard");
     return <Dashboard />;
   };
@@ -203,5 +212,5 @@ const InitPreferenceForm = () => {
     </>
   );
 };
-
+//exports preference form component; imported in corresponding file in pages folder
 export default InitPreferenceForm;

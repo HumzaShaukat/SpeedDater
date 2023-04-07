@@ -1,9 +1,15 @@
 import React, { useState } from "react";
+//imports react bootstap tags t structure/style component
 import { Form, Button, Alert } from "react-bootstrap";
+//imports needed for photo upload mutation
 import { useMutation } from "@apollo/client";
 import { UPLOAD_FILE } from "../../utils/mutations";
+//uuid to assign unique ids for the photos users upload
 import { v4 as uuidv4 } from "uuid";
+
+//function to create/structure/ style the functioning photo upload component
 const UploadFile = () => {
+  //set state for mutations
   const [mutate, { loading, error }] = useMutation(UPLOAD_FILE);
   const [newUpload, setNewUpload] = useState({
     file: {},
@@ -14,6 +20,7 @@ const UploadFile = () => {
       files: [file],
     },
   }) => {
+    //structures photo data; unique id assigned here
     if (validity.valid) {
       var newFile = new File([file], uuidv4(), {
         type: file.type,
@@ -22,7 +29,7 @@ const UploadFile = () => {
       setNewUpload(newFile);
     }
   };
-
+// handles the submited/uploaded photo
   const handleInputSubmit = (event) => {
     event.preventDefault();
     mutate({ variables: { file: newUpload } });
@@ -51,5 +58,5 @@ const UploadFile = () => {
     </React.Fragment>
   );
 };
-
+//exports photo upload component to be rendered to dashboard
 export default UploadFile;

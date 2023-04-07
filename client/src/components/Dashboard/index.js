@@ -1,17 +1,28 @@
 import React, { useState } from "react";
+//imports react bootstrap tags for styling/ structuring component
 import { Container, Carousel, Button, Row, Col, Card } from "react-bootstrap";
+//imports corresponding css styling file
 import "../../styles/dashboard.css";
+//imports needed for mutation that handles connection request
 import { DELETE_CONNECTION } from "../../utils/mutations";
 import { useMutation } from "@apollo/client";
 import ConnectionRequest from "../connectionRequest";
+//imports component for uploading pictures
 import UploadFile from "../inputTest";
+//imports to assist with routing
 import { Link, useNavigate } from "react-router-dom";
 
+//function to create/ render the user dashboard page; user, bio, and preference data are passed in as props
 const DashboardComponent = ({ myUser, myBio, myPreference }) => {
+  //navigate assists with routing between pages
   const navigate = useNavigate();
+  //set state of user connection mutations
   const [deleteConnection] = useMutation(DELETE_CONNECTION);
+  //set state of user picture upload 
   const [upload, setUpload] = useState(false);
+  //function to handle a user denying a connection request
   const deleteConHandler = async (userId) => {
+    //deletes the request
     try {
       const { data } = deleteConnection({ variables: { userId: userId } }).then(
         () => navigate(0)
@@ -20,7 +31,7 @@ const DashboardComponent = ({ myUser, myBio, myPreference }) => {
       console.error(err);
     }
   };
-
+//function to handle user uploading a new picture
   const handleUpload = () => {
     setUpload(true);
   };
@@ -28,7 +39,7 @@ const DashboardComponent = ({ myUser, myBio, myPreference }) => {
   if (!myBio || !myPreference) {
     return <h1>Please add a bio and preferences</h1>;
   }
-
+// returns the html, structured, styled, functionging dashboard component
   return (
     <Container id="container">
       <Row>
@@ -163,5 +174,5 @@ const DashboardComponent = ({ myUser, myBio, myPreference }) => {
     </Container>
   );
 };
-
+//exports the dashboard component; its imported in the corresponding file in the pages folder
 export default DashboardComponent;

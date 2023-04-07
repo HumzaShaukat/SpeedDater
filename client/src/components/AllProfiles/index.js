@@ -1,9 +1,14 @@
 import React from "react";
+//imports react bootstrap tags to use in structuring component
 import { Container, Card, Row } from "react-bootstrap";
+//imports corresponding css styling file 
 import "../../styles/profileList.css";
+//imports link to assist in routing 
 import { Link } from "react-router-dom";
 
+//function to handle creating and rendering all profiles component
 const AllProfiles = (props) => {
+  //declares bios as a const, sets it to a prop to pull and pass in user bio data
   const { bios } = props;
   console.log(bios);
   return (

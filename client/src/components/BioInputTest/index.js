@@ -1,14 +1,22 @@
+//imports hooks
 import React, { useState, useEffect } from "react";
+//imports react bootstrap tags for structuring html
 import { Form, Button, Alert } from "react-bootstrap";
+//imports corresponding css styling file
 import "../../styles/bioform.css";
+//imports use navigate to assist in routing
 import { useNavigate } from "react-router-dom";
+//imports preference page to navigate to upon form submit
 import InitPreferencePage from "../../pages/PreferenceTest";
+//imports needed for mutation to create a users bio data
 import { useMutation } from "@apollo/client";
 import { ADD_BIO } from "../../utils/mutations";
 
+//function to handle creating and rendering the initial functioning bio data form
 const InitBioForm = () => {
+  //declares usenavigate as a function
   const navigate = useNavigate();
-  // set initial form state
+  // set initial form state to empty strings 
   const [userFormData, setUserFormData] = useState({
     interests: "",
     bio: "",
@@ -20,9 +28,10 @@ const InitBioForm = () => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-
+//state for add bio mutation
   const [addBio, { error }] = useMutation(ADD_BIO);
 
+//if there is an issue with the user's input, triggers alert
   useEffect(() => {
     if (error) {
       setShowAlert(true);
@@ -31,21 +40,23 @@ const InitBioForm = () => {
     }
   }, [error]);
 
+  //sets name, value pair for input in the form
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
 
+  //handles the user submitting the completed form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // check if form has everything needed
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
       event.stopPropagation();
     }
-
+//calls addbio mutation to create the logged in user's bio data
     try {
       const { data } = await addBio({
         variables: {
@@ -60,7 +71,7 @@ const InitBioForm = () => {
     } catch (err) {
       console.error(err);
     }
-
+//resets the form inputs to empty strings
     setUserFormData({
       interests: "",
       bio: "",
@@ -69,7 +80,7 @@ const InitBioForm = () => {
       location: "",
       pictures: "",
     });
-
+//seemlessly navigate to the next user input prompt page
     navigate("/newpref");
     return <InitPreferencePage />;
   };

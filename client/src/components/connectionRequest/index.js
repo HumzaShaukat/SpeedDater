@@ -1,15 +1,25 @@
 import React from "react";
+//imports needed for connection mutations
 import { useMutation } from "@apollo/client";
 import { ACCEPT_CONNECTION, DELETE_REQUEST } from "../../utils/mutations";
+//react bootstrap tags imported and used to structure/style this component
 import { Button, Card } from "react-bootstrap";
+//imports corresponding css styling file
 import "../../styles/dashboard.css";
+//imports to assist in routing
 import { Link, useNavigate } from "react-router-dom";
 
+//handles creating and rendering html and functioning connection requests
 function ConnectionRequest(props) {
+  //use navigate-- for routing
   const navigate = useNavigate();
+  //sets state of accept request mutation
   const [acceptConnection] = useMutation(ACCEPT_CONNECTION);
+  //set state of delete request mutation
   const [deleteRequest] = useMutation(DELETE_REQUEST);
+  //function to handle if user chooses to deny a user's request
   const deleteReqHandler = async (userId) => {
+    //calls delete request mutation
     try {
       const { data } = await deleteRequest({
         variables: { userId: userId },
@@ -18,7 +28,9 @@ function ConnectionRequest(props) {
       console.error(err);
     }
   };
+  //function to handle if user accepts a request
   const acceptConHandler = async (userId) => {
+    //calls accept request mutation
     try {
       const { data } = await acceptConnection({
         variables: { userId: userId },
@@ -51,5 +63,5 @@ function ConnectionRequest(props) {
     </div>
   );
 }
-
+//exports this component to be used within the user dashboard page
 export default ConnectionRequest;
