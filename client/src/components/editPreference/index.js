@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import "../../styles/bioform.css";
-
+import { useNavigate } from "react-router-dom";
+import Dashboard from "../../pages/Dashboard";
 import { useMutation } from "@apollo/client";
 import { UPDATE_PREFERENCE } from "../../utils/mutations";
 
 const EditPreferenceForm = ({ myPreference }) => {
+  const navigate = useNavigate();
   // set initial form state
   const [userFormData, setUserFormData] = useState({
     ageMin: myPreference.ageMin,
@@ -54,18 +56,11 @@ const EditPreferenceForm = ({ myPreference }) => {
           location: userFormData.location,
         },
       });
-      console.log(data);
     } catch (err) {
       console.error(err);
     }
-
-    setUserFormData({
-      ageMin: "",
-      ageMax: "",
-      sexOrientation: "",
-      gender: "",
-      location: "",
-    });
+    navigate("/dashboard");
+    return <Dashboard />;
   };
 
   return (

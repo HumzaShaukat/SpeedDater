@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import "../../styles/signupLogin.css";
 import { useNavigate } from "react-router-dom";
+import InitBioPage from "../../pages/bioForm";
 
 import { useMutation } from "@apollo/client";
 import { ADD_USER } from "../../utils/mutations";
@@ -54,13 +55,8 @@ const SignupForm = () => {
     } catch (err) {
       console.error(err);
     }
-
-    setUserFormData({
-      username: "",
-      email: "",
-      password: "",
-    });
-    navigate("/newbio", { replace: true });
+    navigate("/newbio");
+    return <InitBioPage />;
   };
 
   return (

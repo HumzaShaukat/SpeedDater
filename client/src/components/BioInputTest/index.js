@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Button, Alert } from "react-bootstrap";
 import "../../styles/bioform.css";
 import { useNavigate } from "react-router-dom";
-
+import InitPreferencePage from "../../pages/PreferenceTest";
 import { useMutation } from "@apollo/client";
 import { ADD_BIO } from "../../utils/mutations";
 
@@ -71,6 +71,7 @@ const InitBioForm = () => {
     });
 
     navigate("/newpref");
+    return <InitPreferencePage />;
   };
 
   return (
