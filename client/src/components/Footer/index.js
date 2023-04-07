@@ -1,6 +1,8 @@
 import React from "react";
+//imports corresponding css styling file
 import "../../styles/footer.css";
 
+//function to render the universal footer of the application
 function Footer() {
   return (
     <footer className="footer">
@@ -76,5 +78,5 @@ function Footer() {
     </footer>
   );
 }
-
+//exports footer
 export default Footer;

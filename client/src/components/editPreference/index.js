@@ -1,14 +1,22 @@
+//imports hooks
 import React, { useState, useEffect } from "react";
+//imports react bootstrap tags for structuring/styling this component
 import { Form, Button, Alert } from "react-bootstrap";
+//imports corresponding css styling file
 import "../../styles/bioform.css";
+//imports usenavigate to assist in routing
 import { useNavigate } from "react-router-dom";
+//imports the user dashboard component
 import Dashboard from "../../pages/Dashboard";
+//imports needed for update preference mutation
 import { useMutation } from "@apollo/client";
 import { UPDATE_PREFERENCE } from "../../utils/mutations";
 
+//function to handles creating/rendering a functioning form for user to update their existing preference data
 const EditPreferenceForm = ({ myPreference }) => {
+  //sets navigate to function to assist in routing 
   const navigate = useNavigate();
-  // set initial form state
+  // set initial form state to the user's existing preference data to be editted
   const [userFormData, setUserFormData] = useState({
     ageMin: myPreference.ageMin,
     ageMax: myPreference.ageMax,
@@ -20,9 +28,9 @@ const EditPreferenceForm = ({ myPreference }) => {
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
-
+//set state for update preference mutation
   const [updatePreference, { error }] = useMutation(UPDATE_PREFERENCE);
-
+//triggers state of form validation 
   useEffect(() => {
     if (error) {
       setShowAlert(true);
@@ -30,16 +38,16 @@ const EditPreferenceForm = ({ myPreference }) => {
       setShowAlert(false);
     }
   }, [error]);
-
+//sets key value pair of userform to corresponding db values
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
   };
-
+//function to handle when user submites form
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
-    // check if form has everything (as per react-bootstrap docs)
+    // check if form has everything 
     const form = event.currentTarget;
     if (form.checkValidity() === false) {
       event.preventDefault();
@@ -47,6 +55,7 @@ const EditPreferenceForm = ({ myPreference }) => {
     }
 
     try {
+      //calls update preference mutation; existing preference data will be updated to the new user inputs
       const { data } = await updatePreference({
         variables: {
           ageMin: parseInt(userFormData.ageMin),
@@ -59,6 +68,7 @@ const EditPreferenceForm = ({ myPreference }) => {
     } catch (err) {
       console.error(err);
     }
+    //form submit directs user to their dashboard page
     navigate("/dashboard");
     return <Dashboard />;
   };
@@ -183,5 +193,5 @@ const EditPreferenceForm = ({ myPreference }) => {
     </>
   );
 };
-
+//exports edit preference form component; imported to corresponding file in page folder
 export default EditPreferenceForm;
